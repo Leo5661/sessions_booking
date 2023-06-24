@@ -9,3 +9,26 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Student {
+  id           String @id @default(uuid())
+  universityId String @unique
+  name         String
+  password     String
+}
+
+model Dean {
+  id           String @id @default(uuid())
+  universityId String @unique
+  name         String
+  password     String
+  slots        Slot[]
+}
+
+model Slot {
+  id          String   @id @default(uuid())
+  date        DateTime
+  isBooked    Boolean
+  belongsToId String
+  belongsTo   Dean     @relation(fields: [belongsToId], references: [id])
+}
