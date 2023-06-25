@@ -20,7 +20,6 @@ model Student {
 model Dean {
   id           String @id @default(uuid())
   universityId String @unique
-  name         String
   password     String
   slots        Slot[]
 }
