@@ -39,3 +39,30 @@ export const deanLogin = async (req, res) => {
     const token = createJWT(user);
     res.json({token});
 }
+
+export const bookedSlots = async (req, res) => {
+    const id = req.user.id;
+
+    const slot = await prisma.dean.findUnique({
+        where:{
+            id: id,
+        },
+        select: {
+            slots: {
+                include: {
+                    bookedBy: {
+                        select: {
+                            name: true
+                        }
+                    }
+                }
+            },
+            
+        }
+    })
+
+    const bookedSlots = slot.slots;
+
+    res.status(200)
+    res.json({bookedSlots})
+}

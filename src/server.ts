@@ -4,6 +4,7 @@ import morgan from "morgan";
 import studentRouter from "./routers/studentRouter";
 import { protect } from "./modules/auth";
 import authRouter from "./routers/authRouter";
+import deanRouter from "./routers/deanRouter";
 
 const app = express();
 app.use(cors());
@@ -18,5 +19,6 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/api/student", protect, studentRouter);
+app.use("/api/dean", protect, deanRouter);
 
 export default app;

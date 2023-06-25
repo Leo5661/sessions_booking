@@ -20,7 +20,7 @@ export const bookSlot = async (req, res) => {
         data: {
             date: date,
             time: time,
-            bookedBy: bookedBy,
+            bookedById: bookedBy,
             belongsToId: deanId,
         }
     })

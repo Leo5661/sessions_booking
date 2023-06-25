@@ -15,7 +15,7 @@ model Student {
   universityId String @unique
   name         String
   password     String
-  slots        Slot[]
+  slot         Slot?
 }
 
 model Dean {
@@ -29,8 +29,8 @@ model Slot {
   id          String  @id @default(uuid())
   date        String
   time        String
-  bookedBy    String
+  bookedById  String  @unique
   belongsToId String
   belongsTo   Dean    @relation(fields: [belongsToId], references: [universityId])
-  belongsTO   Student @relation(fields: [bookedBy], references: [id])
+  bookedBy    Student @relation(fields: [bookedById], references: [id])
 }
