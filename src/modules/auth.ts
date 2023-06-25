@@ -1,4 +1,6 @@
 import bcrypt from "bcrypt";
+import prisma from "./db";
+import { Dean, Student } from "@prisma/client";
 
 export const comparePasswords = (password, hash) => {
     return bcrypt.compare(password,hash);
@@ -13,7 +15,7 @@ export const createJWT = (user) => {
     return token;
 }
 
-export const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
     const bearer = req.headers.authorization;
 
     if(!bearer){
@@ -31,9 +33,30 @@ export const protect = (req, res, next) => {
     }
 
     try{
- 
-    } catch (e) {
+        let user: Student | Dean;
+        user = await prisma.student.findUnique({
+            where:{
+                id: token
+            }
+        })
+    
+        if(!user){
+            user = await prisma.dean.findUnique({
+                where:{
+                    id: token
+                }
+            }) 
+        }
 
+        req.user = user;
+        next()
+        
+    } catch (e) {
+        res.status(401);
+        res.json({message: "Not Authorized"})
+        return
     }
+
+    // req.token = token;
 }
 

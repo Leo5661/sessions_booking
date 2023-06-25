@@ -29,6 +29,8 @@ export const studentLogin = async (req, res) => {
         }
     })
 
+    console.log(user);
+
     const isValid = await comparePasswords(password, user.password)
 
     if(!isValid){
