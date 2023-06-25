@@ -37,14 +37,14 @@ export const protect = async (req, res, next) => {
         user = await prisma.student.findUnique({
             where:{
                 id: token
-            }
+            },
         })
     
         if(!user){
             user = await prisma.dean.findUnique({
                 where:{
                     id: token
-                }
+                },
             }) 
         }
 

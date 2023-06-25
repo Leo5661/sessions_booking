@@ -1,25 +1,36 @@
+import { log } from "console";
 import prisma from "../modules/db";
 import { nextSlotDates } from "../modules/slot";
 
 export const getSlotDate = async (req, res) => {
     
-    // const user = await prisma.student.findUnique({
-    //     where:{
-    //         id: req.token
-    //     }
-    // })
-
-    // if(!user){
-    //     res.status(401);
-    //     res.json({message: "Bad token"});
-    //     return
-    // }
-
-
-    const user = req.user;
-    
     const date = nextSlotDates();
     
     res.status(200);
-    res.json({user: user, slots: date});
+    res.json({slots: date});
+}
+
+export const bookSlot = async (req, res) => {
+    const bookedBy = req.user.id;
+    const deanId = req.body.deanId;
+    const date = req.body.date;
+    const time = req.body.time;
+
+    const slot = await prisma.slot.create({
+        data: {
+            date: date,
+            time: time,
+            bookedBy: bookedBy,
+            belongsToId: deanId,
+        }
+    })
+
+    if(!slot){
+        res.status(500)
+        res.json({message: "Slot not booked please try again"});
+        return
+    }
+
+    res.status(200);
+    res.json({slot});
 }
