@@ -1,13 +1,28 @@
-import { log } from "console";
 import prisma from "../modules/db";
 import { nextSlotDates } from "../modules/slot";
 
 export const getSlotDate = async (req, res) => {
     
-    const date = nextSlotDates();
+    let avelibleDate = [];
+    const nextDate = nextSlotDates();
+    const slots = await prisma.slot.findMany();
+
+    if(slots.length > 0){
+        slots.map((slot) => {
+            nextDate.forEach(date => {
+                if(date.date != slot.date){
+                    avelibleDate.push(date);
+                }
+            });
+    
+        })
+    } else {
+        avelibleDate = nextDate.map(item => {return {...item}});
+    }
+    
     
     res.status(200);
-    res.json({slots: date});
+    res.json({slots: avelibleDate});
 }
 
 export const bookSlot = async (req, res) => {
