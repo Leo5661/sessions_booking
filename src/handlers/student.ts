@@ -23,22 +23,29 @@ export const studentLogin = async (req, res) => {
     const universityId = req.body.universityId;
     const password = req.body.password;
 
-    const user = await prisma.student.findUnique({
-        where: {
-            universityId: universityId,
-        }
-    })
+    try{
+        const user = await prisma.student.findUnique({
+            where: {
+                universityId: universityId,
+            }
+        })
+    
+        console.log(user);
+    
+        const isValid = await comparePasswords(password, user.password)
 
-    console.log(user);
+        if(!isValid){
+            res.status(401);
+            res.json({message: "Wrong Password!"});
+            return;
+        } 
 
-    const isValid = await comparePasswords(password, user.password)
-
-    if(!isValid){
+        const token = createJWT(user);
+        res.json({token});
+    } catch (e) {
         res.status(401);
-        res.json({message: "Wrong Password!"});
+        res.json({message: "Check UniversityId or Password!"});
         return;
-    } 
+    }
 
-    const token = createJWT(user);
-    res.json({token});
 }

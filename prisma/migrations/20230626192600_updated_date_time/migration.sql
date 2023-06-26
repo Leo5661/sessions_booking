@@ -20,8 +20,8 @@ CREATE TABLE "Dean" (
 -- CreateTable
 CREATE TABLE "Slot" (
     "id" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
-    "isBooked" BOOLEAN NOT NULL,
+    "dateTime" TIMESTAMPTZ NOT NULL,
+    "bookedById" TEXT NOT NULL,
     "belongsToId" TEXT NOT NULL,
 
     CONSTRAINT "Slot_pkey" PRIMARY KEY ("id")
@@ -33,5 +33,11 @@ CREATE UNIQUE INDEX "Student_universityId_key" ON "Student"("universityId");
 -- CreateIndex
 CREATE UNIQUE INDEX "Dean_universityId_key" ON "Dean"("universityId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Slot_bookedById_key" ON "Slot"("bookedById");
+
 -- AddForeignKey
-ALTER TABLE "Slot" ADD CONSTRAINT "Slot_belongsToId_fkey" FOREIGN KEY ("belongsToId") REFERENCES "Dean"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Slot" ADD CONSTRAINT "Slot_belongsToId_fkey" FOREIGN KEY ("belongsToId") REFERENCES "Dean"("universityId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Slot" ADD CONSTRAINT "Slot_bookedById_fkey" FOREIGN KEY ("bookedById") REFERENCES "Student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

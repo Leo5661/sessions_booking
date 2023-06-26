@@ -26,11 +26,10 @@ model Dean {
 }
 
 model Slot {
-  id          String  @id @default(uuid())
-  date        String
-  time        String
-  bookedById  String  @unique
+  id          String   @id @default(uuid())
+  dateTime    DateTime @db.Timestamptz()
+  bookedById  String   @unique
   belongsToId String
-  belongsTo   Dean    @relation(fields: [belongsToId], references: [universityId])
-  bookedBy    Student @relation(fields: [bookedById], references: [id])
+  belongsTo   Dean     @relation(fields: [belongsToId], references: [universityId])
+  bookedBy    Student  @relation(fields: [bookedById], references: [id])
 }
