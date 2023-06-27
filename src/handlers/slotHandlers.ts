@@ -81,6 +81,8 @@ export const bookSlot = async (req, res) => {
         res.status(200);
         res.json({slot});
     } catch (e) {
+        console.log(e);
+        
         res.status(500)
         res.json({message: "Slot not booked please try again"});
         return
@@ -96,6 +98,11 @@ export const bookedSlots = async (req, res) => {
         },
         select: {
             slots: {
+                where: {
+                    dateTime: {
+                        gte: DateTime.now().toString()
+                    }
+                },
                 include: {
                     bookedBy: {
                         select: {

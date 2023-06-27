@@ -27,7 +27,7 @@ model Dean {
 
 model Slot {
   id          String   @id @default(uuid())
-  dateTime    DateTime @db.Timestamptz()
+  dateTime    DateTime @unique @db.Timestamptz()
   bookedById  String   @unique
   belongsToId String
   belongsTo   Dean     @relation(fields: [belongsToId], references: [universityId])
