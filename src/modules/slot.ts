@@ -12,16 +12,14 @@ const {DateTime} = require("luxon");
         date.setDate(date.getDate() + (-1 * diff))
     }
 
-    date2.setDate(date.getDate() + 1);
+    // date2.setDate(date.getDate() + 1);
     
     // format
     const formatedDate1 = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate(), 10, 0, 0); 
-    const formateddate2 = DateTime.local(date2.getFullYear(), date2.getMonth() + 1, date2.getDate(), 10, 0, 0);
+    const formateddate2 = formatedDate1.plus({day: 1});
     
     // console.log([DateTime.fromObject(formatedDate1.c), formateddate2.toString()]);
     const ms = formateddate2.toUnixInteger();
-
-    console.log(ms);
     
     return [{dateTime: formatedDate1}, {dateTime: formateddate2}];
 }
